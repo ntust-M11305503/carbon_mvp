@@ -1,0 +1,11 @@
+
+fastapi
+uvicorn[standard]
+pytesseract
+pdf2image
+pillow
+pandas
+pymoo==0.6.0
+streamlit
+python-multipart
+openai>=1.12
