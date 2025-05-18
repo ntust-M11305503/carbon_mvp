@@ -11,7 +11,10 @@
 ## 環境安裝
 ```bash
 # 安裝系統相依元件 (Windows 已有 Tesseract 時可跳過)
-sudo apt-get update && sudo apt-get install -y poppler-utils tesseract-ocr
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+choco install tesseract 
 
 # Python 環境
 python -m venv venv
@@ -20,33 +23,33 @@ pip install -r requirements.txt
 ```
 
 ## 環境變數
+https://github.com/oschwartz10612/poppler-windows/releases/  下載 Poppler for Windows
+
+將 Poppler 加入 PATH
+Poppler 的 bin 目錄。例如：C:\poppler-xx.x.x\bin
+
 建 `.env` 或在 shell export  
 ```
-OPENAI_API_KEY=sk-...
-MODEL=gpt-4o-mini
-DATA_DIR=data
+OPENAI_API_KEY="sk-..."
+OPENAI_MODEL="gpt-4o-mini" 
 ```
 
 ## 執行
 ```bash
-uvicorn app.main:app --reload
+# 各開一個 cmd or powershell 來執行
+uvicorn app.main:app --reload --port 8000
 streamlit run dashboard/app.py
 ```
 
 ## 結構
 ```
 app/
-  main.py          # FastAPI 入口
+  main.py            # FastAPI 入口
+dashboard/
+  app.py             # Streamlit 前端
 modules/
   ocr.py
   optimizer.py
   openai_helper.py
-dashboard/
-  app.py           # Streamlit 前端
 requirements.txt
 ```
-
-## Note
-- OCR 正則僅為示範，實務需依表格樣式調整  
-- `pymoo` 已內嵌 NSGA-II；人口 & 代數可於 `optimizer.optimize_materials` 調整  
-- OpenAI 費用：估碳&議價段落 token 每次上百字，成本極低
