@@ -75,8 +75,7 @@ def fill_carbon_factors(df: pd.DataFrame):
             est = estimate_factor(row)
             print(f"Row {i}: item={row.get('item') or row.get('工程項目')}, est_gwp={est}")
             gwp_filled.append(est.get("mean") if est.get("mean") is not None else 0)
-            # 只擷取前50字當remark
-            remarks.append((est.get("confidence") or "")[:50])
+            remarks.append(est.get("confidence") or "")
         else:
             gwp_filled.append(value)
             remarks.append(row.get('remark', '')[:50] if 'remark' in row else '')
